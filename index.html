@@ -1,0 +1,112 @@
+<html>
+	<head>
+		<title>Say</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/gh/dracula/highlightjs/dracula.css"
+		/>
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js"></script>
+		<style>
+			* {
+				margin: 0;
+			}
+
+			body {
+				font-family: "Roboto", sans-serif;
+				margin: 2em;
+				text-align: center;
+			}
+
+			h1 {
+				font-size: 3em;
+			}
+
+			h1,
+			h2 {
+				font-weight: 500;
+			}
+
+			h2 .hljs {
+				font-weight: 400;
+				font-size: 1rem;
+				padding: 0.25em 0.5em;
+			}
+
+			a {
+				color: #e91e63;
+				text-decoration: none;
+				font-weight: 500;
+			}
+
+			pre {
+				display: inline-block;
+				text-align: left;
+			}
+
+			.hljs {
+				font-family: "Roboto Mono", monospace;
+				border-radius: 8px;
+				padding: 1em;
+				font-size: 0.9em;
+			}
+
+			.hljs * {
+				font-weight: 400 !important;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Say</h1>
+		<div style="margin: 1em 0"></div>
+		<h2 style="display: inline-flex; align-items: center">
+			API for macOS'
+			<pre
+				style="margin: 0 0.5em"
+			><code class="language-plaintext">say</code></pre>
+			command
+		</h2>
+		<div style="margin: 2em 0"></div>
+		<p>
+			All voice available:
+			<br />
+			<a href="/voices" id="voices"></a>
+		</p>
+		<div style="margin: 2em 0"></div>
+		<p>Example script for Tivoli:</p>
+		<div style="margin: 0.5em 0"></div>
+		<pre><code class="language-javascript">function tts(voice, text) {
+	var sound = SoundCache.getSound(
+		"https://say.tivolicloud.com/sound.wav?voice=" +
+			encodeURIComponent(voice) +
+			"&text=" +
+			encodeURIComponent(text)
+	);
+	function play() {
+		Audio.playSound(sound, {
+			position: MyAvatar.position,
+			volume: 0.5
+		});
+		Chat.sendMessage(text, false, false);
+	}
+	if (sound.downloaded) {
+		play();
+	} else {
+		sound.ready.connect(play);
+	}
+}
+
+tts("Samantha", "Hi there!");</code></pre>
+		<script>
+			document.getElementById("voices").textContent =
+				window.location.origin + "/voices";
+			hljs.highlightAll();
+		</script>
+	</body>
+</html>
+

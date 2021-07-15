@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 const crypto = require("crypto");
 const child_process = require("child_process");
 const { stdout, stderr } = require("process");
@@ -19,7 +20,11 @@ const run = command => {
 	});
 };
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
+	res.sendFile(path.resolve(__dirname, "index.html"));
+});
+
+app.get("/voices", async (req, res) => {
 	try {
 		const voices = await run("say -v\\?");
 		const sortedVoices = voices
@@ -69,6 +74,10 @@ app.get("/sound.wav", async (req, res) => {
 	} catch (error) {
 		return res.send(error);
 	}
+});
+
+app.get("*", (req, res) => {
+	res.redirect("/");
 });
 
 app.listen(8080, () => {
